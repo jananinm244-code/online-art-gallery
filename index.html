@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArtNest | Online Art Gallery</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root{
+    --cream:#fffaf2;
+    --paper:#f7efe3;
+    --lavender:#c8b6d9;
+    --lavender-dark:#80668f;
+    --sage:#b8c8b0;
+    --sage-dark:#536653;
+    --pink:#e8bfc5;
+    --blue:#aec9d5;
+    --peach:#e8c4a8;
+    --ink:#302936;
+    --muted:#756d78;
+    --white:#ffffff;
+    --shadow:0 12px 35px rgba(70,55,75,.12);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    color:var(--ink);
+    background:
+        radial-gradient(circle at 10% 10%,#e8dff0 0,transparent 25%),
+        radial-gradient(circle at 90% 30%,#dce9df 0,transparent 25%),
+        var(--cream);
+}
+
+
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:72px;
+    background:rgba(255,250,242,.94);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid #ddd2df;
+    display:flex;
+    align-items:center;
+    padding:0 5%;
+    gap:35px;
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    font-weight:600;
+    color:var(--lavender-dark);
+    white-space:nowrap;
+}
+
+.logo span{
+    display:block;
+    font-family:Poppins,sans-serif;
+    font-size:9px;
+    letter-spacing:3px;
+    color:var(--muted);
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+    margin-left:auto;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:var(--ink);
+    font-size:14px;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--lavender-dark);
+}
+
+.nav-btn{
+    border:0;
+    background:var(--lavender);
+    padding:10px 18px;
+    border-radius:25px;
+    color:#3d3044;
+    font-weight:600;
+    cursor:pointer;
+}
+
+
+.hero{
+    min-height:570px;
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    align-items:center;
+    gap:50px;
+    padding:65px 7%;
+    overflow:hidden;
+}
+
+.hero-text small{
+    color:var(--lavender-dark);
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-size:11px;
+    font-weight:600;
+}
+
+.hero-text h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(50px,6vw,82px);
+    line-height:1;
+    margin:15px 0 22px;
+}
+
+.hero-text h1 span{
+    color:var(--lavender-dark);
+    font-style:italic;
+}
+
+.hero-text p{
+    color:var(--muted);
+    max-width:560px;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+}
+
+.primary{
+    background:var(--lavender-dark);
+    color:white;
+    border:0;
+    padding:13px 22px;
+    border-radius:28px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.secondary{
+    background:white;
+    color:var(--ink);
+    border:1px solid #d8cedb;
+    padding:13px 22px;
+    border-radius:28px;
+    cursor:pointer;
+}
+
+.hero-art{
+    height:420px;
+    position:relative;
+}
+
+.art-frame{
+    position:absolute;
+    width:290px;
+    height:370px;
+    padding:10px;
+    background:white;
+    box-shadow:var(--shadow);
+}
+
+.art-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.frame-one{
+    left:30px;
+    top:20px;
+    transform:rotate(-7deg);
+}
+
+.frame-two{
+    right:20px;
+    top:50px;
+    transform:rotate(6deg);
+}
+
+.frame-three{
+    left:150px;
+    bottom:-10px;
+    width:200px;
+    height:245px;
+    transform:rotate(2deg);
+}
+
+
+.floating{
+    position:absolute;
+    font-size:35px;
+    animation:float 4s ease-in-out infinite;
+    pointer-events:none;
+}
+
+.paint-palette{
+    top:105px;
+    right:7%;
+}
+
+.star{
+    bottom:80px;
+    left:4%;
+    animation-delay:1s;
+}
+
+.flower{
+    top:170px;
+    left:2%;
+    animation-delay:2s;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-15px) rotate(8deg)}
+}
+
+
+.search-area{
+    padding:0 7% 35px;
+}
+
+.search-box{
+    background:white;
+    border:1px solid #ddd3df;
+    border-radius:30px;
+    max-width:650px;
+    padding:14px 22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:var(--shadow);
+}
+
+.search-box input{
+    border:0;
+    outline:0;
+    width:100%;
+    font-family:Poppins;
+    background:transparent;
+}
+
+
+.gallery-section{
+    padding:55px 7%;
+    background:#f9f3eb;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.section-title small{
+    color:var(--lavender-dark);
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-size:10px;
+}
+
+.section-title h2{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
+    margin:8px 0;
+}
+
+.section-title p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.filters{
+    display:flex;
+    justify-content:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.filter{
+    border:1px solid #d7ceda;
+    background:white;
+    color:var(--ink);
+    padding:9px 17px;
+    border-radius:22px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.filter:hover,
+.filter.active{
+    background:var(--lavender-dark);
+    color:white;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:.3s;
+    position:relative;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.image-container{
+    height:280px;
+    position:relative;
+    overflow:hidden;
+}
+
+.image-container img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.5s;
+}
+
+.card:hover img{
+    transform:scale(1.07);
+}
+
+.heart{
+    position:absolute;
+    top:12px;
+    right:12px;
+    border:0;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#ffffffdd;
+    font-size:20px;
+    cursor:pointer;
+    z-index:2;
+}
+
+.heart.saved{
+    background:var(--pink);
+}
+
+.card-info{
+    padding:17px;
+}
+
+.category{
+    color:var(--lavender-dark);
+    font-size:10px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+
+.card-info h3{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    margin:5px 0;
+}
+
+.artist{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.card-bottom{
+    margin-top:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.price{
+    font-weight:700;
+    color:var(--sage-dark);
+}
+
+.view-btn{
+    border:0;
+    background:var(--sage);
+    color:#334233;
+    padding:8px 13px;
+    border-radius:18px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+}
+
+
+.artist-section{
+    padding:70px 7%;
+}
+
+.artist-box{
+    background:linear-gradient(120deg,#dce8dd,#eee4f2);
+    border-radius:25px;
+    padding:45px;
+    display:grid;
+    grid-template-columns:190px 1fr auto;
+    align-items:center;
+    gap:30px;
+}
+
+.artist-photo{
+    width:180px;
+    height:210px;
+    object-fit:cover;
+    border:9px solid white;
+    box-shadow:var(--shadow);
+    transform:rotate(-4deg);
+}
+
+.artist-box h2{
+    font-family:'Playfair Display',serif;
+    font-size:38px;
+}
+
+.artist-box p{
+    color:var(--muted);
+    line-height:1.8;
+    margin:10px 0;
+}
+
+
+.sell-section{
+    background:#eee7f3;
+    padding:65px 7%;
+}
+
+.sell-container{
+    max-width:900px;
+    margin:auto;
+    text-align:center;
+}
+
+.sell-container h2{
+    font-family:'Playfair Display',serif;
+    font-size:43px;
+}
+
+.sell-container p{
+    color:var(--muted);
+    margin:10px auto 25px;
+}
+
+.form{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    text-align:left;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form label{
+    font-size:12px;
+    color:var(--muted);
+    display:block;
+    margin-bottom:6px;
+}
+
+.form input,
+.form select,
+.form textarea{
+    width:100%;
+    border:1px solid #d9cfdb;
+    border-radius:10px;
+    padding:12px;
+    outline:0;
+    background:#fffdf9;
+}
+
+.form textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.form button{
+    margin-top:18px;
+}
+
+
+.art-strip{
+    overflow:hidden;
+    background:#313c36;
+    padding:15px 0;
+    color:white;
+}
+
+.strip-content{
+    display:flex;
+    width:max-content;
+    gap:40px;
+    animation:move 30s linear infinite;
+    align-items:center;
+}
+
+.strip-content span{
+    white-space:nowrap;
+    font-family:'Playfair Display',serif;
+    font-size:19px;
+}
+
+@keyframes move{
+    to{transform:translateX(-50%)}
+}
+
+
+footer{
+    background:#302936;
+    color:#ddd2df;
+    padding:40px 7%;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+footer h3{
+    color:white;
+    font-family:'Playfair Display',serif;
+    font-size:25px;
+}
+
+footer p{
+    font-size:12px;
+    color:#aaa0ad;
+    margin-top:7px;
+}
+
+.footer-links{
+    display:flex;
+    gap:20px;
+    font-size:13px;
+}
+
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#211b25cc;
+    z-index:300;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:850px;
+    max-width:100%;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:45% 55%;
+    box-shadow:0 30px 80px #0005;
+}
+
+.modal-box img{
+    width:100%;
+    height:100%;
+    min-height:450px;
+    object-fit:cover;
+}
+
+.modal-content{
+    padding:35px;
+}
+
+.close{
+    float:right;
+    border:0;
+    background:#eee5ef;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.modal-content h2{
+    font-family:'Playfair Display',serif;
+    font-size:38px;
+    margin-top:35px;
+}
+
+.modal-content .modal-price{
+    font-size:24px;
+    color:var(--sage-dark);
+    font-weight:700;
+    margin:15px 0;
+}
+
+.modal-content p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#302936;
+    color:white;
+    padding:13px 20px;
+    border-radius:12px;
+    z-index:500;
+    transform:translateY(100px);
+    transition:.3s;
+}
+
+.toast.show{
+    transform:translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+    .gallery{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .hero-art{
+        max-width:650px;
+        width:100%;
+        margin:auto;
+    }
+
+    .artist-box{
+        grid-template-columns:150px 1fr;
+    }
+
+    .artist-box .primary{
+        grid-column:1/-1;
+    }
+}
+
+@media(max-width:750px){
+    .navbar{
+        gap:15px;
+        height:auto;
+        padding:15px 5%;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero{
+        padding:50px 6%;
+    }
+
+    .hero-art{
+        height:350px;
+    }
+
+    .art-frame{
+        width:230px;
+        height:300px;
+    }
+
+    .frame-three{
+        width:160px;
+        height:200px;
+        left:120px;
+    }
+
+    .gallery{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .artist-box{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .artist-photo{
+        margin:auto;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .modal-box{
+        grid-template-columns:1fr;
+        max-height:90vh;
+        overflow:auto;
+    }
+
+    .modal-box img{
+        min-height:280px;
+        height:280px;
+    }
+}
+
+@media(max-width:500px){
+    .gallery{
+        grid-template-columns:1fr;
+    }
+
+    .hero-text h1{
+        font-size:52px;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+    }
+
+    .hero-buttons button{
+        width:100%;
+    }
+
+    .hero-art{
+        transform:scale(.85);
+        margin-left:-20px;
+        width:110%;
+    }
+
+    .section-title h2,
+    .sell-container h2{
+        font-size:35px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        ArtNest
+        <span>DISCOVER • CREATE • COLLECT</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#artists">Artists</a>
+        <a href="#sell">Sell Art</a>
+    </div>
+
+    <button class="nav-btn" onclick="showToast('Welcome to your art collection!')">
+        My Collection
+    </button>
+
+</nav>
+
+
+
+<section class="hero" id="home">
+
+    <div class="hero-text">
+
+        <small>Online Art Gallery</small>
+
+        <h1>
+            Art that feels<br>
+            <span>alive.</span>
+        </h1>
+
+        <p>
+            Discover original sketches, paintings, portraits and digital
+            creations from independent artists. Find a piece that belongs
+            on your wall — or share your own masterpiece with the world.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="primary" onclick="scrollToGallery()">
+                Explore Gallery →
+            </button>
+
+            <button class="secondary" onclick="scrollToSell()">
+                Sell Your Art
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-art">
+
+        <div class="art-frame frame-one">
+            <img src="https://loremflickr.com/600/800/art,painting?lock=201">
+        </div>
+
+        <div class="art-frame frame-two">
+            <img src="https://loremflickr.com/600/800/vintage,painting?lock=202">
+        </div>
+
+        <div class="art-frame frame-three">
+            <img src="https://loremflickr.com/500/700/sketch,art?lock=203">
+        </div>
+
+    </div>
+
+    <div class="floating paint-palette">🎨</div>
+    <div class="floating star">✦</div>
+    <div class="floating flower">🌷</div>
+
+</section>
+
+
+
+<div class="search-area">
+
+    <div class="search-box">
+
+        🔍
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search artwork, artist or style..."
+        >
+
+    </div>
+
+</div>
+
+
+<div class="art-strip">
+
+    <div class="strip-content">
+
+        <span>✦ Vincent van Gogh</span>
+        <span>✿ Claude Monet</span>
+        <span>✦ Frida Kahlo</span>
+        <span>❀ Gustav Klimt</span>
+        <span>✦ Leonardo da Vinci</span>
+        <span>✿ Pablo Picasso</span>
+        <span>✦ Vincent van Gogh</span>
+        <span>✿ Claude Monet</span>
+        <span>✦ Frida Kahlo</span>
+        <span>❀ Gustav Klimt</span>
+
+    </div>
+
+</div>
+
+
+
+<section class="gallery-section" id="gallery">
+
+    <div class="section-title">
+
+        <small>Curated Collection</small>
+
+        <h2>Explore the Gallery</h2>
+
+        <p>
+            Discover beautiful artworks from different artists and styles.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <button class="filter active" data-filter="All">
+            All
+        </button>
+
+        <button class="filter" data-filter="Painting">
+            Paintings
+        </button>
+
+        <button class="filter" data-filter="Sketch">
+            Sketches
+        </button>
+
+        <button class="filter" data-filter="Watercolor">
+            Watercolor
+        </button>
+
+        <button class="filter" data-filter="Digital">
+            Digital
+        </button>
+
+        <button class="filter" data-filter="Portrait">
+            Portraits
+        </button>
+
+    </div>
+
+
+    <div class="gallery" id="galleryGrid"></div>
+
+</section>
+
+
+<section class="artist-section" id="artists">
+
+    <div class="artist-box">
+
+        <img
+            class="artist-photo"
+            src="https://loremflickr.com/500/700/vangogh,artist?lock=501"
+        >
+
+        <div>
+
+            <small style="color:#80668f;letter-spacing:3px">
+                FEATURED ARTIST
+            </small>
+
+            <h2>Vincent van Gogh</h2>
+
+            <p>
+                A celebration of expressive brushwork, emotional colour
+                and unforgettable skies. Explore artworks inspired by
+                one of history's most recognizable artistic styles.
+            </p>
+
+            <strong>Starry Night • Sunflowers • Irises</strong>
+
+        </div>
+
+        <button class="primary" onclick="searchArtist()">
+            View Works →
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<section class="sell-section" id="sell">
+
+    <div class="sell-container">
+
+        <h2>Put Your Art on the Wall</h2>
+
+        <p>
+            Are you an artist? Upload your artwork and let collectors
+            discover your creativity.
+        </p>
+
+
+        <form class="form" id="artForm">
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Artwork Title</label>
+                    <input
+                        id="artTitle"
+                        required
+                        placeholder="Example: Moonlit Garden"
+                    >
+                </div>
+
+                <div>
+                    <label>Artist Name</label>
+                    <input
+                        id="artistName"
+                        required
+                        placeholder="Your name"
+                    >
+                </div>
+
+                <div>
+                    <label>Artwork Type</label>
+
+                    <select id="artType">
+
+                        <option>Painting</option>
+                        <option>Sketch</option>
+                        <option>Watercolor</option>
+                        <option>Digital</option>
+                        <option>Portrait</option>
+
+                    </select>
+
+                </div>
+
+                <div>
+                    <label>Price (₹)</label>
+
+                    <input
+                        id="artPrice"
+                        type="number"
+                        min="0"
+                        required
+                        placeholder="2500"
+                    >
+
+                </div>
+
+                <div class="full">
+
+                    <label>Artwork Story</label>
+
+                    <textarea
+                        id="artStory"
+                        placeholder="Tell collectors about your artwork..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+            <button class="primary" type="submit">
+                Publish Artwork
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+
+<footer>
+
+    <div>
+
+        <h3>ArtNest</h3>
+
+        <p>
+            Discover • Create • Collect
+        </p>
+
+    </div>
+
+    <div class="footer-links">
+
+        <a href="#home">Home</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#artists">Artists</a>
+        <a href="#sell">Sell Art</a>
+
+    </div>
+
+</footer>
+
+
+<!-- ART MODAL -->
+
+<div class="modal" id="artModal">
+
+    <div class="modal-box">
+
+        <img id="modalImage">
+
+        <div class="modal-content">
+
+            <button
+                class="close"
+                onclick="closeModal()"
+            >
+                ×
+            </button>
+
+            <small
+                id="modalCategory"
+                style="color:#80668f;letter-spacing:2px"
+            ></small>
+
+            <h2 id="modalTitle"></h2>
+
+            <p id="modalArtist"></p>
+
+            <div
+                class="modal-price"
+                id="modalPrice"
+            ></div>
+
+            <p id="modalDescription"></p>
+
+            <button
+                class="primary"
+                style="margin-top:20px"
+                onclick="purchaseArt()"
+            >
+                Purchase Artwork
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+
+const artworks = [
+
+{
+title:"Starry Evening",
+artist:"Vincent van Gogh",
+type:"Painting",
+price:3200,
+image:"https://loremflickr.com/700/850/starrynight,painting?lock=1",
+description:"A dreamy night landscape inspired by expressive swirling skies."
+},
+
+{
+title:"Golden Sunflowers",
+artist:"Vincent van Gogh",
+type:"Painting",
+price:2800,
+image:"https://loremflickr.com/700/850/sunflowers,painting?lock=2",
+description:"Warm golden flowers inspired by the timeless sunflower series."
+},
+
+{
+title:"Girl With Pearl",
+artist:"Johannes Vermeer",
+type:"Portrait",
+price:4500,
+image:"https://loremflickr.com/700/850/vermeer,portrait?lock=3",
+description:"A classical portrait study with soft light and peaceful expression."
+},
+
+{
+title:"The Scream",
+artist:"Edvard Munch",
+type:"Painting",
+price:3800,
+image:"https://loremflickr.com/700/850/expressionist,painting?lock=4",
+description:"An expressive artwork exploring emotion through colour and movement."
+},
+
+{
+title:"Mona Muse",
+artist:"Leonardo da Vinci",
+type:"Portrait",
+price:5200,
+image:"https://loremflickr.com/700/850/renaissance,portrait?lock=5",
+description:"A classical portrait inspired by Renaissance painting."
+},
+
+{
+title:"Water Garden",
+artist:"Claude Monet",
+type:"Painting",
+price:3600,
+image:"https://loremflickr.com/700/850/monet,waterlily?lock=6",
+description:"Soft water reflections inspired by impressionist gardens."
+},
+
+{
+title:"Ocean Wave",
+artist:"Hokusai",
+type:"Watercolor",
+price:2900,
+image:"https://loremflickr.com/700/850/japanese,art,wave?lock=7",
+description:"A flowing ocean composition inspired by Japanese art."
+},
+
+{
+title:"Quiet Woman",
+artist:"Amedeo Modigliani",
+type:"Portrait",
+price:3100,
+image:"https://loremflickr.com/700/850/modigliani,portrait?lock=8",
+description:"An elegant portrait study using muted colours and simple forms."
+},
+
+{
+title:"Forest Path",
+artist:"Mira Sen",
+type:"Painting",
+price:2400,
+image:"https://loremflickr.com/700/850/forest,painting?lock=9",
+description:"A peaceful woodland path surrounded by soft natural colours."
+},
+
+{
+title:"Castle in Mist",
+artist:"Caspar Friedrich",
+type:"Painting",
+price:4200,
+image:"https://loremflickr.com/700/850/castle,landscape,painting?lock=10",
+description:"A mysterious landscape hidden inside morning mist."
+},
+
+{
+title:"Golden Kiss",
+artist:"Gustav Klimt",
+type:"Painting",
+price:4800,
+image:"https://loremflickr.com/700/850/gold,painting,art?lock=11",
+description:"Decorative patterns and romantic golden tones."
+},
+
+{
+title:"Girl With Hat",
+artist:"Pierre Renoir",
+type:"Portrait",
+price:3400,
+image:"https://loremflickr.com/700/850/renoir,portrait?lock=12",
+description:"A bright portrait study celebrating colour and sunlight."
+},
+
+{
+title:"Still Life",
+artist:"Paul Cezanne",
+type:"Painting",
+price:2600,
+image:"https://loremflickr.com/700/850/stilllife,painting?lock=13",
+description:"A balanced still-life composition with fruit and vessels."
+},
+
+{
+title:"Colour Symphony",
+artist:"Wassily Kandinsky",
+type:"Digital",
+price:3000,
+image:"https://loremflickr.com/700/850/abstract,colour,art?lock=14",
+description:"An energetic composition inspired by abstract art."
+},
+
+{
+title:"Dream of Time",
+artist:"Salvador Dali",
+type:"Painting",
+price:3800,
+image:"https://loremflickr.com/700/850/surrealism,painting?lock=15",
+description:"A dreamlike artwork inspired by surrealist imagination."
+},
+
+{
+title:"Old Town Sketch",
+artist:"Anaya Rao",
+type:"Sketch",
+price:1800,
+image:"https://loremflickr.com/700/850/architecture,sketch?lock=16",
+description:"Detailed graphite lines capture an old European street."
+},
+
+{
+title:"Rainy Window",
+artist:"Leo Martin",
+type:"Watercolor",
+price:2100,
+image:"https://loremflickr.com/700/850/rain,watercolor?lock=17",
+description:"Transparent washes recreate a peaceful rainy afternoon."
+},
+
+{
+title:"Blue Bird",
+artist:"Nila Joseph",
+type:"Watercolor",
+price:1600,
+image:"https://loremflickr.com/700/850/bird,watercolor?lock=18",
+description:"A delicate bird painted using soft blue and green washes."
+},
+
+{
+title:"Garden Cat",
+artist:"Riya Dev",
+type:"Sketch",
+price:1900,
+image:"https://loremflickr.com/700/850/cat,sketch?lock=19",
+description:"A charming pencil sketch of a cat resting in a garden."
+},
+
+{
+title:"Moonlit Lake",
+artist:"Arun Das",
+type:"Painting",
+price:2750,
+image:"https://loremflickr.com/700/850/moon,lake,painting?lock=20",
+description:"A calm landscape built around reflections and moonlight."
+},
+
+{
+title:"Vintage Bicycle",
+artist:"Meera K",
+type:"Sketch",
+price:1450,
+image:"https://loremflickr.com/700/850/bicycle,sketch?lock=21",
+description:"A nostalgic graphite study of a classic bicycle."
+},
+
+{
+title:"Botanical Study",
+artist:"Sara Paul",
+type:"Watercolor",
+price:2200,
+image:"https://loremflickr.com/700/850/botanical,watercolor?lock=22",
+description:"Leaves and flowers painted using natural green tones."
+},
+
+{
+title:"Dream Face",
+artist:"Ira Menon",
+type:"Digital",
+price:2600,
+image:"https://loremflickr.com/700/850/digital,portrait?lock=23",
+description:"A contemporary digital portrait using soft shapes."
+},
+
+{
+title:"Terracotta Home",
+artist:"Dev Kumar",
+type:"Painting",
+price:2300,
+image:"https://loremflickr.com/700/850/village,landscape,painting?lock=24",
+description:"A warm architectural landscape inspired by Indian homes."
+},
+
+{
+title:"Red Umbrella",
+artist:"Kavya S",
+type:"Painting",
+price:2500,
+image:"https://loremflickr.com/700/850/redumbrella,painting?lock=25",
+description:"A bright red umbrella against a peaceful rainy street."
+},
+
+{
+title:"Birdsong",
+artist:"Asha Roy",
+type:"Digital",
+price:1950,
+image:"https://loremflickr.com/700/850/birds,digital,art?lock=26",
+description:"A colourful digital artwork inspired by morning birds."
+},
+
+{
+title:"Ancient Door",
+artist:"Neil Thomas",
+type:"Sketch",
+price:1750,
+image:"https://loremflickr.com/700/850/old,door,sketch?lock=27",
+description:"Detailed graphite textures bring an old doorway to life."
+},
+
+{
+title:"Lavender Field",
+artist:"Diya N",
+type:"Painting",
+price:2950,
+image:"https://loremflickr.com/700/850/lavender,field,painting?lock=28",
+description:"A peaceful field painted with violet and green tones."
+},
+
+{
+title:"Muse in Pink",
+artist:"Tara Iyer",
+type:"Portrait",
+price:3300,
+image:"https://loremflickr.com/700/850/woman,portrait,painting?lock=29",
+description:"A contemporary portrait built around soft pink tones."
+},
+
+{
+title:"Little Astronaut",
+artist:"Aarav P",
+type:"Digital",
+price:2100,
+image:"https://loremflickr.com/700/850/space,digital,art?lock=30",
+description:"A playful digital artwork about imagination and exploration."
+}
+
+];
+
+
+
+let currentFilter = "All";
+
+let saved =
+JSON.parse(localStorage.getItem("artnestSaved")) || [];
+
+let currentArtwork = null;
+
+
+
+function displayArt(){
+
+    const grid =
+    document.getElementById("galleryGrid");
+
+    const search =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
+
+    const filtered =
+    artworks.filter(art => {
+
+        const matchesFilter =
+        currentFilter === "All" ||
+        art.type === currentFilter;
+
+        const matchesSearch =
+        art.title.toLowerCase().includes(search) ||
+        art.artist.toLowerCase().includes(search) ||
+        art.type.toLowerCase().includes(search);
+
+        return matchesFilter && matchesSearch;
+
+    });
+
+
+    if(filtered.length === 0){
+
+        grid.innerHTML = `
+        <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:60px;
+            color:#756d78;
+        ">
+            <h3 style="font-family:'Playfair Display';font-size:30px">
+                No artwork found
+            </h3>
+            <p>Try another search or category.</p>
+        </div>
+        `;
+
+        return;
+    }
+
+
+    grid.innerHTML =
+    filtered.map((art) => {
+
+        const index =
+        artworks.indexOf(art);
+
+        const isSaved =
+        saved.includes(index);
+
+        return `
+
+        <article class="card">
+
+            <button
+                class="heart ${isSaved ? "saved" : ""}"
+                onclick="toggleSave(${index})"
+            >
+                ${isSaved ? "♥" : "♡"}
+            </button>
+
+            <div class="image-container">
+
+                <img
+                    src="${art.image}"
+                    alt="${art.title}"
+                    loading="lazy"
+                >
+
+            </div>
+
+            <div class="card-info">
+
+                <div class="category">
+                    ${art.type}
+                </div>
+
+                <h3>
+                    ${art.title}
+                </h3>
+
+                <div class="artist">
+                    by ${art.artist}
+                </div>
+
+                <div class="card-bottom">
+
+                    <span class="price">
+                        ₹${art.price.toLocaleString("en-IN")}
+                    </span>
+
+                    <button
+                        class="view-btn"
+                        onclick="openArtwork(${index})"
+                    >
+                        View Art
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        `;
+
+    }).join("");
+
+}
+
+
+
+document
+.querySelectorAll(".filter")
+.forEach(button => {
+
+    button.addEventListener("click",function(){
+
+        currentFilter =
+        this.dataset.filter;
+
+        document
+        .querySelectorAll(".filter")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        this.classList.add("active");
+
+        displayArt();
+
+    });
+
+});
+
+
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "input",
+    displayArt
+);
+
+
+
+function toggleSave(index){
+
+    const position =
+    saved.indexOf(index);
+
+    if(position === -1){
+
+        saved.push(index);
+
+        showToast(
+            "Artwork added to your collection ♥"
+        );
+
+    }else{
+
+        saved.splice(position,1);
+
+        showToast(
+            "Artwork removed from collection"
+        );
+
+    }
+
+    localStorage.setItem(
+        "artnestSaved",
+        JSON.stringify(saved)
+    );
+
+    displayArt();
+
+}
+
+
+
+function openArtwork(index){
+
+    currentArtwork = index;
+
+    const art =
+    artworks[index];
+
+    document
+    .getElementById("modalImage")
+    .src = art.image;
+
+    document
+    .getElementById("modalTitle")
+    .textContent = art.title;
+
+    document
+    .getElementById("modalArtist")
+    .textContent =
+    "Created by " + art.artist;
+
+    document
+    .getElementById("modalCategory")
+    .textContent =
+    art.type;
+
+    document
+    .getElementById("modalPrice")
+    .textContent =
+    "₹" + art.price.toLocaleString("en-IN");
+
+    document
+    .getElementById("modalDescription")
+    .textContent =
+    art.description;
+
+    document
+    .getElementById("artModal")
+    .classList.add("show");
+
+}
+
+
+
+function closeModal(){
+
+    document
+    .getElementById("artModal")
+    .classList.remove("show");
+
+}
+
+
+
+function purchaseArt(){
+
+    closeModal();
+
+    showToast(
+        "Purchase request sent to the artist ✦"
+    );
+
+}
+
+
+
+document
+.getElementById("artForm")
+.addEventListener(
+"submit",
+function(event){
+
+    event.preventDefault();
+
+    const title =
+    document.getElementById("artTitle").value;
+
+    const artist =
+    document.getElementById("artistName").value;
+
+    const type =
+    document.getElementById("artType").value;
+
+    const price =
+    Number(
+        document.getElementById("artPrice").value
+    );
+
+    const story =
+    document.getElementById("artStory").value ||
+    "A beautiful new artwork shared through ArtNest.";
+
+
+    const newArtwork = {
+
+        title:title,
+
+        artist:artist,
+
+        type:type,
+
+        price:price,
+
+        image:
+        `https://loremflickr.com/700/850/art,${type.toLowerCase()}?lock=${Date.now()}`,
+
+        description:story
+
+    };
+
+
+    artworks.unshift(newArtwork);
+
+    currentFilter = "All";
+
+    document
+    .querySelectorAll(".filter")
+    .forEach(btn => {
+
+        btn.classList.toggle(
+            "active",
+            btn.dataset.filter === "All"
+        );
+
+    });
+
+
+    displayArt();
+
+    this.reset();
+
+    showToast(
+        "Your artwork is now in the ArtNest gallery ✦"
+    );
+
+    scrollToGallery();
+
+});
+
+
+
+function searchArtist(){
+
+    document
+    .getElementById("searchInput")
+    .value =
+    "Vincent van Gogh";
+
+    currentFilter = "All";
+
+    document
+    .querySelectorAll(".filter")
+    .forEach(btn => {
+
+        btn.classList.toggle(
+            "active",
+            btn.dataset.filter === "All"
+        );
+
+    });
+
+    displayArt();
+
+    scrollToGallery();
+
+}
+
+
+
+function scrollToGallery(){
+
+    document
+    .getElementById("gallery")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+function scrollToSell(){
+
+    document
+    .getElementById("sell")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+
+function showToast(message){
+
+    const toast =
+    document.getElementById("toast");
+
+    toast.textContent =
+    message;
+
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer =
+    setTimeout(
+        () =>
+        toast.classList.remove("show"),
+        2500
+    );
+
+}
+
+
+document
+.getElementById("artModal")
+.addEventListener(
+"click",
+function(event){
+
+    if(event.target === this){
+
+        closeModal();
+
+    }
+
+});
+
+
+document.addEventListener(
+"keydown",
+function(event){
+
+    if(event.key === "Escape"){
+
+        closeModal();
+
+    }
+
+});
+
+
+
+displayArt();
+
+</script>
+
+</body>
+</html>
